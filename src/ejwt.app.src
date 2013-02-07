@@ -1,11 +1,13 @@
 {application, ejwt,
  [
-  {description, ""},
-  {vsn, "1"},
+  {description, "Encode/decode JSON Web Token"},
+  {vsn, git},
   {registered, []},
   {applications, [
                   kernel,
-                  stdlib
+                  stdlib,
+                  jsx,
+                  erlsha2
                  ]},
   {mod, { ejwt_app, []}},
   {env, []}
