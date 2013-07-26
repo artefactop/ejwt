@@ -2,13 +2,12 @@
  [
   {description, "Encode/decode JSON Web Token"},
   {vsn, git},
-  {registered, []},
+  {registered, [ejwt]},
   {applications, [
                   kernel,
                   stdlib,
                   jsx,
                   erlsha2
                  ]},
-  {mod, { ejwt_app, []}},
   {env, []}
  ]}.
