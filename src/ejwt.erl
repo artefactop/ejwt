@@ -6,7 +6,7 @@
 
 -module(ejwt).
 
--define(HS265, <<"HS265">>).
+-define(HS256, <<"HS256">>).
 -define(HS384, <<"HS384">>).
 -define(HS512, <<"HS512">>).
 
@@ -19,7 +19,7 @@
 -spec encode(Payload::list(), Key::list()) -> binary().
 
 encode(Payload, Key) ->
-    encode(Payload, Key, ?HS265).
+    encode(Payload, Key, ?HS256).
 
 -spec encode(Payload::list(), Key::list(), Algorithm::binary()) -> binary().
 
@@ -35,7 +35,7 @@ encode(Payload, Key, Algorithm) ->
 
 -spec get_mac(Key::list(), Data::binary(), Method::binary()) -> binary().
 
-get_mac(Key, Data, ?HS265) ->
+get_mac(Key, Data, ?HS256) ->
 	hmac:hmac256(Key, Data);
 get_mac(Key, Data, ?HS384) ->
 	hmac:hmac256(Key, Data);
