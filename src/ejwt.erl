@@ -16,38 +16,38 @@
 %% Application callbacks
 %% ===================================================================
 
--spec encode(Payload::list(), Key::list()) -> binary().
+-spec encode(Payload :: list(), Key :: list()) -> binary().
 
 encode(Payload, Key) ->
     encode(Payload, Key, ?HS265).
 
--spec encode(Payload::list(), Key::list(), Algorithm::binary()) -> binary().
+-spec encode(Payload :: list(), Key :: list(), Algorithm :: binary()) -> binary().
 
 encode(Payload, Key, Algorithm) ->
-	Header = [{<<"typ">>, <<"JWT">>}, {<<"alg">>, Algorithm}],
-	Hjson = jsx:encode(Header),
-	Pjson = jsx:encode(Payload), 
-	Hb = base64url:encode(Hjson),
-	Pb = base64url:encode(Pjson),
-	Data = <<Hb/binary, ".", Pb/binary>>,
-	Signing = base64url:encode(get_mac(Key, Data, Algorithm)),
+    Header = [{<<"typ">>, <<"JWT">>}, {<<"alg">>, Algorithm}],
+    Hjson = jsx:encode(Header),
+    Pjson = jsx:encode(Payload),
+    Hb = base64url:encode(Hjson),
+    Pb = base64url:encode(Pjson),
+    Data = <<Hb/binary, ".", Pb/binary>>,
+    Signing = base64url:encode(get_mac(Key, Data, Algorithm)),
     <<Data/binary, ".", Signing/binary>>.
 
--spec get_mac(Key::list(), Data::binary(), Method::binary()) -> binary().
+-spec get_mac(Key :: list(), Data :: binary(), Method :: binary()) -> binary().
 
 get_mac(Key, Data, ?HS265) ->
-	hmac:hmac256(Key, Data);
+    hmac:hmac256(Key, Data);
 get_mac(Key, Data, ?HS384) ->
-	hmac:hmac256(Key, Data);
+    hmac:hmac256(Key, Data);
 get_mac(Key, Data, ?HS512) ->
-	hmac:hmac256(Key, Data).
+    hmac:hmac256(Key, Data).
 
--spec decode(JWT::binary()) -> term().
+-spec decode(JWT :: binary()) -> string() | error.
 
 decode(JWT) ->
     decode(JWT, undefined).
 
--spec decode(JWT::binary(), Key::binary()) -> string().
+-spec decode(JWT :: binary(), Key :: binary()) -> string() | error.
 
 decode(JWT, Key) ->
     [Header_segment, Data] = binary:split(JWT, <<".">>),
@@ -55,12 +55,12 @@ decode(JWT, Key) ->
     Payload = jsx:decode(base64url:decode(Payload_segment)),
     case Key of
         undefined -> Payload;
-        _ -> 
+        _ ->
             Header = jsx:decode(base64url:decode(Header_segment)),
             Signature = base64url:decode(Crypto_segment),
             Signing_input = <<Header_segment/binary, ".", Payload_segment/binary>>,
             Signing = get_mac(Key, Signing_input, proplists:get_value(<<"alg">>, Header)),
-            if 
+            if
                 Signature == Signing ->
                     Payload;
                 true ->

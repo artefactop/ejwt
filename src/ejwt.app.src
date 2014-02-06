@@ -1,13 +1,13 @@
 {application, ejwt,
- [
-  {description, "Encode/decode JSON Web Token"},
-  {vsn, git},
-  {registered, [ejwt]},
-  {applications, [
-                  kernel,
-                  stdlib,
-                  jsx,
-                  erlsha2
-                 ]},
-  {env, []}
- ]}.
+    [
+        {description, "Encode/decode JSON Web Token"},
+        {vsn, git},
+        {registered, [ejwt]},
+        {applications, [
+            kernel,
+            stdlib,
+            jsx,
+            erlsha2
+        ]},
+        {env, []}
+    ]}.
