@@ -3,4 +3,6 @@ deps
 *.o
 *.beam
 *.plt
+*.iml
+.idea
 ebin
