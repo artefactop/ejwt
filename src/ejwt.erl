@@ -12,16 +12,18 @@
 
 -export([encode/2, encode/3, decode/1, decode/2]).
 
+-type key() :: iolist() | binary().
+
 %% ===================================================================
 %% Application callbacks
 %% ===================================================================
 
--spec encode(Payload :: list(), Key :: list()) -> binary().
+-spec encode(Payload :: list(), Key :: key()) -> binary().
 
 encode(Payload, Key) ->
     encode(Payload, Key, ?HS256).
 
--spec encode(Payload :: list(), Key :: list(), Algorithm :: binary()) -> binary().
+-spec encode(Payload :: list(), Key :: key(), Algorithm :: binary()) -> binary().
 
 encode(Payload, Key, Algorithm) ->
     Header = [{<<"typ">>, <<"JWT">>}, {<<"alg">>, Algorithm}],
@@ -33,7 +35,7 @@ encode(Payload, Key, Algorithm) ->
     Signing = base64url:encode(get_mac(Key, Data, Algorithm)),
     <<Data/binary, ".", Signing/binary>>.
 
--spec get_mac(Key :: list(), Data :: binary(), Method :: binary()) -> binary().
+-spec get_mac(Key :: key(), Data :: binary(), Method :: binary()) -> binary().
 
 get_mac(Key, Data, ?HS256) ->
     hmac:hmac256(Key, Data);
@@ -42,12 +44,12 @@ get_mac(Key, Data, ?HS384) ->
 get_mac(Key, Data, ?HS512) ->
     hmac:hmac512(Key, Data).
 
--spec decode(JWT :: binary()) -> string() | error.
+-spec decode(JWT :: binary()) -> list() | error.
 
 decode(JWT) ->
     decode(JWT, undefined).
 
--spec decode(JWT :: binary(), Key :: binary()) -> string() | error.
+-spec decode(JWT :: binary(), Key :: key()) -> list() | error.
 
 decode(JWT, Key) ->
     [Header_segment, Data] = binary:split(JWT, <<".">>),
