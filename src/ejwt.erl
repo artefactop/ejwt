@@ -1,6 +1,6 @@
 %%%-------------------------------------------------------------------
 %%% File        : ejwt.erl
-%%% Author      : Jose Luis Navarro <pepe@yuilop.com>
+%%% Author      : Jose Luis Navarro
 %%% Description : encode/decode library for jwt
 %%%-------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ encode(Payload, Key) ->
 -spec encode(Payload :: list(), Key :: key(), Algorithm :: binary()) -> binary().
 
 encode(Payload, Key, Algorithm) ->
-    Header = [{<<"typ">>, <<"JWT">>}, {<<"alg">>, Algorithm}],
+    Header = [{<<"alg">>, Algorithm}, {<<"typ">>, <<"JWT">>}],
     Hjson = jsx:encode(Header),
     Pjson = jsx:encode(Payload),
     Hb = base64url:encode(Hjson),
