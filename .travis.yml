@@ -3,6 +3,7 @@ otp_release:
   - R16B03-1
   - 17.1
   - 18.3
+before_script:
   - "./bootstrap_travis.sh"
 script: "./rebar3 eunit"
 deploy:

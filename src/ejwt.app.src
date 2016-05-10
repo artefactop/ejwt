@@ -1,12 +1,15 @@
 {application, ejwt,
   [
     {description, "Encode/decode JSON Web Token"},
-    {vsn, git},
+    {vsn, "git"},
     {registered, [ejwt]},
     {applications, [
         kernel,
         stdlib,
         jsx
     ]},
-    {env, []}
+    {env, []},
+    {maintainers, ["Jose Luis Navarro"]},
+    {licenses, ["Apache"]},
+    {links, [{"Github", "https://github.com/artefactop/ejwt"}]}
   ]}.
