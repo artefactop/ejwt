@@ -1,9 +1,13 @@
 language: erlang
-script: rebar compile && rebar skip_deps=true eunit
 otp_release:
-  - 18.3
-  - 17.5
-  - 18.0
   - R16B03-1
-  - R15B02
-
+  - 17.1
+  - 18.3
+before_script:
+  - "./bootstrap_travis.sh"
+script: "./rebar3 eunit"
+deploy:
+  provider: script
+  script: scripts/hex.sh
+  on:
+    tags: true
