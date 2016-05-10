@@ -38,11 +38,11 @@ encode(Payload, Key, Algorithm) ->
 -spec get_mac(Key :: key(), Data :: binary(), Method :: binary()) -> binary().
 
 get_mac(Key, Data, ?HS256) ->
-    hmac:hmac256(Key, Data);
+    crypto:hmac(sha256, Key, Data);
 get_mac(Key, Data, ?HS384) ->
-    hmac:hmac384(Key, Data);
+    crypto:hmac(sha384, Key, Data);
 get_mac(Key, Data, ?HS512) ->
-    hmac:hmac512(Key, Data).
+    crypto:hmac(sha512, Key, Data).
 
 -spec decode(JWT :: binary()) -> list() | error.
 
@@ -69,4 +69,3 @@ decode(JWT, Key) ->
                     error
             end
     end.
-
