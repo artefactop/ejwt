@@ -3,7 +3,10 @@ otp_release:
   - R16B03-1
   - 17.1
   - 18.3
-before_script:
-  - "kerl list installations"
   - "./bootstrap_travis.sh"
 script: "./rebar3 eunit"
+deploy:
+  provider: script
+  script: scripts/hex.sh
+  on:
+    tags: true
